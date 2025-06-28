@@ -1,14 +1,14 @@
 WITH yesterday AS (
     SELECT * FROM users_cumulated
-    WHERE date = DATE('2023-03-30')
+    WHERE date = DATE('2023-01-30')
 ),
     today AS (
-          SELECT user_id,
-                 DATE_TRUNC('day', event_time) AS today_date,
+          SELECT CAST(user_id AS TEXT) AS user_id,
+                 CAST(CAST(event_time AS TIMESTAMP) AS DATE) AS today_date,
                  COUNT(1) AS num_events FROM events
-            WHERE DATE_TRUNC('day', event_time) = DATE('2023-03-31')
+            WHERE CAST(CAST(event_time AS TIMESTAMP) AS DATE) = DATE('2023-01-31')
             AND user_id IS NOT NULL
-         GROUP BY user_id,  DATE_TRUNC('day', event_time)
+         GROUP BY user_id,  CAST(CAST(event_time AS TIMESTAMP) AS DATE)
     )
 INSERT INTO users_cumulated
 SELECT
